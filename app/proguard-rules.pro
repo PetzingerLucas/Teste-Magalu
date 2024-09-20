@@ -19,3 +19,15 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Glide rules
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.ResourceDecoder
+
+# OkHttp / Retrofit rules
+-dontwarn okhttp3.**
+-dontwarn retrofit2.**
+
+# Dagger
+-keep class dagger.** { *; }
+-dontwarn javax.inject.**
