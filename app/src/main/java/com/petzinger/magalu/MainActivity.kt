@@ -1,18 +1,15 @@
 package com.petzinger.magalu
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
 import com.petzinger.magalu.di.DaggerAppComponent
-import javax.inject.Inject
 
-class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var viewModel: MainViewModel
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
         DaggerAppComponent.create().inject(this)
     }
 }
