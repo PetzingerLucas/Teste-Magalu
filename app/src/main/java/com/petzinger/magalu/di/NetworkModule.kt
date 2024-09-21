@@ -14,7 +14,7 @@ class NetworkModule {
 
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
-        val token = BuildConfig.GITHUB_API_TOKEN
+        val token = System.getenv(GITHUB_API_TOKEN) ?: BuildConfig.GITHUB_API_TOKEN
         return OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor(token))
             .build()
@@ -28,4 +28,8 @@ class NetworkModule {
 
     @Provides
     fun provideGitHubApi(retrofit: Retrofit): GitHubApi = retrofit.create(GitHubApi::class.java)
+
+    private companion object {
+        const val GITHUB_API_TOKEN = "GIT_HUB_API_TOKEN"
+    }
 }
