@@ -8,6 +8,8 @@ android {
     namespace = "com.petzinger.magalu"
     compileSdk = 34
 
+
+
     defaultConfig {
         applicationId = "com.petzinger.magalu"
         minSdk = 24
@@ -19,6 +21,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "GITHUB_API_TOKEN", "\"${project.findProperty("GITHUB_API_TOKEN") ?: ""}\"")
     }
 
     buildTypes {
@@ -29,6 +33,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
