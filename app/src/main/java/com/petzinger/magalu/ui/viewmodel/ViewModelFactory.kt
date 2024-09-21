@@ -1,4 +1,4 @@
-package com.petzinger.magalu
+package com.petzinger.magalu.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

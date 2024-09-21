@@ -1,4 +1,4 @@
-package com.petzinger.magalu
+package com.petzinger.magalu.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -1,7 +1,8 @@
-package com.petzinger.magalu
+package com.petzinger.magalu.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.petzinger.magalu.R
 import com.petzinger.magalu.di.DaggerAppComponent
 
 class MainActivity : AppCompatActivity() {
