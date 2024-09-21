@@ -77,8 +77,8 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
     implementation("com.squareup.retrofit2:adapter-rxjava3:2.9.0")
 
-    implementation("com.google.dagger:dagger:2.44")
-    kapt("com.google.dagger:dagger-compiler:2.44")
+    implementation("com.google.dagger:dagger:2.47")
+    kapt("com.google.dagger:dagger-compiler:2.47")
 
     implementation("com.github.bumptech.glide:glide:4.15.1")
     kapt("com.github.bumptech.glide:compiler:4.15.1")
