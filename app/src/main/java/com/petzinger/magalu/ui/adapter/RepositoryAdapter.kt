@@ -38,7 +38,6 @@ class RepositoryAdapter(
     inner class RepositoryViewHolder(private val binding: RepositoryListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        @SuppressLint("SetTextI18n")
         fun bind(repository: RepositoryItem) {
             with(binding) {
                 repositoryName.text = repository.name

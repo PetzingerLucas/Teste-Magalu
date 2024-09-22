@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.petzinger.magalu.R
 import com.petzinger.magalu.databinding.PullRequestListItemBinding
 import com.petzinger.magalu.model.PullRequest
+import com.petzinger.magalu.utils.parsedDate
 
 class PullRequestAdapter(
     private val onItemClick: (PullRequest) -> Unit
@@ -37,13 +38,13 @@ class PullRequestAdapter(
     inner class PullRequestViewHolder(private val binding: PullRequestListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        @SuppressLint("SetTextI18n")
         fun bind(pullRequest: PullRequest) {
             with(binding) {
                 prTitle.text = pullRequest.title
                 prBody.text = pullRequest.body
                 fullName.text = pullRequest.user.login
                 username.text = pullRequest.user.login
+                createdAt.text = pullRequest.createdAt?.parsedDate().orEmpty()
                 setUserImage(binding = this, url = pullRequest.user.avatarUrl)
 
                 root.setOnClickListener {
