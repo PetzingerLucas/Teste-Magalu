@@ -42,11 +42,13 @@ class RepositoryListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupRecyclerView()
+
         viewModel =
             ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
 
         viewModel.state.observe(viewLifecycleOwner) { state ->
-            state.repositories.let { repositories ->
+            state?.repositories?.let { repositories ->
                 adapter.submitList(repositories)
             }
         }
