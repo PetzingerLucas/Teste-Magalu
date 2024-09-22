@@ -7,15 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.navigateUp
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.petzinger.magalu.R
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.petzinger.magalu.databinding.FragmentRepositoryListBinding
 import com.petzinger.magalu.di.DaggerAppComponent
 import com.petzinger.magalu.ui.RepositoryIntent
 import com.petzinger.magalu.ui.adapter.RepositoryAdapter
 import com.petzinger.magalu.ui.viewmodel.MainViewModel
+import com.petzinger.magalu.utils.setVisibility
 import javax.inject.Inject
 
 class RepositoryListFragment : Fragment() {
@@ -45,12 +46,10 @@ class RepositoryListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel =
+            ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
 
         setupRecyclerView()
-
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
-
-        viewModel.processIntent(RepositoryIntent.LoadRepositories)
 
         viewModel.state.observe(viewLifecycleOwner) { state ->
             state?.isLoading?.let { isLoading -> setLoadingProgressBar(isLoading) }
@@ -58,13 +57,44 @@ class RepositoryListFragment : Fragment() {
                 adapter.submitList(repositories)
             }
         }
+        if (viewModel.state.value?.repositories.isNullOrEmpty()) {
+            viewModel.processIntent(RepositoryIntent.LoadRepositories())
+        }
     }
 
     private fun setLoadingProgressBar(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        if (viewModel.currentPage != 1) return
+        binding.progressBar.setVisibility(!isLoading)
+        binding.recyclerView.setVisibility(isLoading)
     }
 
     private fun setupRecyclerView() {
+        startAdapter()
+        val dividerItemDecoration =
+            DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+        binding.recyclerView.addItemDecoration(dividerItemDecoration)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = adapter
+        setupListener()
+    }
+
+    private fun setupListener() {
+        binding.recyclerView.addOnScrollListener(object : OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val totalItemCount = layoutManager.itemCount
+                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+
+                if (lastVisibleItemPosition + 5 >= totalItemCount) {
+                    viewModel.processIntent(RepositoryIntent.LoadRepositories())
+                }
+            }
+        })
+    }
+
+    private fun startAdapter() {
+
         adapter = RepositoryAdapter { repository ->
             val action = RepositoryListFragmentDirections
                 .actionRepositoryListFragmentToPullRequestListFragment(
@@ -74,12 +104,6 @@ class RepositoryListFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        val dividerItemDecoration =
-            DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
-        binding.recyclerView.addItemDecoration(dividerItemDecoration)
-
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = adapter
     }
 
     override fun onDestroyView() {

@@ -1,13 +1,18 @@
 package com.petzinger.magalu.ui.fragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.petzinger.magalu.databinding.FragmentPullRequestListBinding
 import com.petzinger.magalu.databinding.FragmentRepositoryListBinding
 import com.petzinger.magalu.di.DaggerAppComponent
@@ -15,6 +20,7 @@ import com.petzinger.magalu.ui.RepositoryIntent
 import com.petzinger.magalu.ui.adapter.PullRequestAdapter
 import com.petzinger.magalu.ui.adapter.RepositoryAdapter
 import com.petzinger.magalu.ui.viewmodel.MainViewModel
+import com.petzinger.magalu.utils.setVisibility
 import javax.inject.Inject
 
 class PullRequestListFragment : Fragment() {
@@ -44,16 +50,10 @@ class PullRequestListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        startAdapter()
         setupRecyclerView()
 
-        viewModel =
-            ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
-
-        arguments?.let {
-            val args = PullRequestListFragmentArgs.fromBundle(it)
-            viewModel.processIntent(RepositoryIntent.LoadPullRequests(args.owner, args.repo))
-        }
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
 
         viewModel.state.observe(viewLifecycleOwner) { state ->
             state?.isLoading?.let { isLoading -> setLoadingProgressBar(isLoading) }
@@ -62,21 +62,29 @@ class PullRequestListFragment : Fragment() {
             }
         }
 
+        arguments?.let {
+            val args = PullRequestListFragmentArgs.fromBundle(it)
+            viewModel.processIntent(RepositoryIntent.LoadPullRequests(args.owner, args.repo))
+        }
     }
 
     private fun setLoadingProgressBar(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.progressBar.setVisibility(!isLoading)
+        binding.recyclerView.setVisibility(isLoading)
+
+    }
+
+    private fun startAdapter() {
+        adapter = PullRequestAdapter { pullRequest ->
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(pullRequest.url))
+            activity?.startActivity(browserIntent)
+        }
     }
 
     private fun setupRecyclerView() {
-        adapter = PullRequestAdapter { pullRequest ->
-            // Todo
-        }
-
         val dividerItemDecoration =
             DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
         binding.recyclerView.addItemDecoration(dividerItemDecoration)
-
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
     }
