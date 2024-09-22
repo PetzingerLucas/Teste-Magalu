@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.petzinger.magalu.databinding.FragmentRepositoryListBinding
 import com.petzinger.magalu.di.DaggerAppComponent
@@ -48,6 +49,11 @@ class RepositoryListFragment : Fragment() {
             ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
 
         viewModel.state.observe(viewLifecycleOwner) { state ->
+            state?.isLoading?.let { isLoading ->
+                setLoadingProgressBar(isLoading)
+
+            }
+
             state?.repositories?.let { repositories ->
                 adapter.submitList(repositories)
             }
@@ -57,10 +63,17 @@ class RepositoryListFragment : Fragment() {
 
     }
 
+    private fun setLoadingProgressBar(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
     private fun setupRecyclerView() {
         adapter = RepositoryAdapter { repository ->
             // Todo
         }
+
+        val dividerItemDecoration = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+        binding.recyclerView.addItemDecoration(dividerItemDecoration)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
