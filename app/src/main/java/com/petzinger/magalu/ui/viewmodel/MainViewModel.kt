@@ -36,7 +36,7 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
     private fun fetchRepositories() {
         _state.value = _state.value?.copy(isLoading = true)
         val disposable = repository.fetchRepositories("kotlin", "stars", 1)
-            .subscribe({ onGetRepoSuccess(response = it) }, { onError(error = it) })
+            .subscribe(::onGetRepoSuccess, ::onError)
 
         compositeDisposable.add(disposable)
     }
@@ -44,7 +44,7 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
     private fun fetchPullRequests(owner: String, repo: String) {
         _state.value = (_state.value?.copy(isLoading = true))
         val disposable = repository.fetchPullRequests(owner, repo)
-            .subscribe({ onGetPrSuccess(response = it) }, { onError(error = it) })
+            .subscribe(::onGetPrSuccess, ::onError)
 
         compositeDisposable.add(disposable)
     }
