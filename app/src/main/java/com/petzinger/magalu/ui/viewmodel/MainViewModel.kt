@@ -1,4 +1,4 @@
-package com.petzinger.magalu
+package com.petzinger.magalu.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -18,7 +18,7 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
     val state: LiveData<RepositoryState> get() = _state
 
     init {
-        _state.postValue(RepositoryState())
+        _state.value = RepositoryState()
     }
 
     override fun onCleared() {

@@ -1,7 +1,7 @@
 package com.petzinger.magalu.di
 
-import com.petzinger.magalu.MainActivity
-import com.petzinger.magalu.ui.RepositoryListFragment
+import com.petzinger.magalu.ui.MainActivity
+import com.petzinger.magalu.ui.fragment.RepositoryListFragment
 import dagger.Component
 import javax.inject.Singleton
 

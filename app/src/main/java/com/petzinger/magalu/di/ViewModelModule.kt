@@ -2,8 +2,8 @@ package com.petzinger.magalu.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.petzinger.magalu.MainViewModel
-import com.petzinger.magalu.ViewModelFactory
+import com.petzinger.magalu.ui.viewmodel.MainViewModel
+import com.petzinger.magalu.ui.viewmodel.ViewModelFactory
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module

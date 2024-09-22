@@ -5,6 +5,6 @@
 
     <fragment
         android:id="@+id/repositoryListFragment"
-        android:name="com.petzinger.magalu.ui.RepositoryListFragment"
+        android:name="com.petzinger.magalu.ui.fragment.RepositoryListFragment"
         tools:layout="@layout/fragment_repository_list" />
 </navigation>
