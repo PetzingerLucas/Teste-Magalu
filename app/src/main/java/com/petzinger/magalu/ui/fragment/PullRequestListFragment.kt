@@ -6,23 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.navigateUp
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.petzinger.magalu.R
+import com.petzinger.magalu.databinding.FragmentPullRequestListBinding
 import com.petzinger.magalu.databinding.FragmentRepositoryListBinding
 import com.petzinger.magalu.di.DaggerAppComponent
 import com.petzinger.magalu.ui.RepositoryIntent
+import com.petzinger.magalu.ui.adapter.PullRequestAdapter
 import com.petzinger.magalu.ui.adapter.RepositoryAdapter
 import com.petzinger.magalu.ui.viewmodel.MainViewModel
 import javax.inject.Inject
 
-class RepositoryListFragment : Fragment() {
+class PullRequestListFragment : Fragment() {
 
-    private var _binding: FragmentRepositoryListBinding? = null
+    private var _binding: FragmentPullRequestListBinding? = null
     private val binding get() = _binding!!
-    private lateinit var adapter: RepositoryAdapter
+    private lateinit var adapter: PullRequestAdapter
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -39,7 +38,7 @@ class RepositoryListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRepositoryListBinding.inflate(inflater, container, false)
+        _binding = FragmentPullRequestListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -48,16 +47,21 @@ class RepositoryListFragment : Fragment() {
 
         setupRecyclerView()
 
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
+        viewModel =
+            ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
 
-        viewModel.processIntent(RepositoryIntent.LoadRepositories)
+        arguments?.let {
+            val args = PullRequestListFragmentArgs.fromBundle(it)
+            viewModel.processIntent(RepositoryIntent.LoadPullRequests(args.owner, args.repo))
+        }
 
         viewModel.state.observe(viewLifecycleOwner) { state ->
             state?.isLoading?.let { isLoading -> setLoadingProgressBar(isLoading) }
-            state?.repositories?.let { repositories ->
-                adapter.submitList(repositories)
+            state?.pullRequests?.let { pullRequests ->
+                adapter.submitList(pullRequests)
             }
         }
+
     }
 
     private fun setLoadingProgressBar(isLoading: Boolean) {
@@ -65,13 +69,8 @@ class RepositoryListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = RepositoryAdapter { repository ->
-            val action = RepositoryListFragmentDirections
-                .actionRepositoryListFragmentToPullRequestListFragment(
-                    repository.repositoryOwner.login,
-                    repository.name
-                )
-            findNavController().navigate(action)
+        adapter = PullRequestAdapter { pullRequest ->
+            // Todo
         }
 
         val dividerItemDecoration =
