@@ -16,6 +16,7 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
     private val compositeDisposable = CompositeDisposable()
     private val _state = MutableLiveData<RepositoryState>()
     val state: LiveData<RepositoryState> get() = _state
+    var currentPage: Int = 1
 
     init {
         _state.value = RepositoryState()
@@ -28,15 +29,24 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
 
     fun processIntent(intent: RepositoryIntent) {
         when (intent) {
-            is RepositoryIntent.LoadRepositories -> fetchRepositories()
+            is RepositoryIntent.LoadRepositories -> {
+                currentPage = if (intent.page != 1) intent.page else currentPage
+                fetchRepositories(
+                    intent.language,
+                    intent.sort,
+                    currentPage
+                )
+            }
+
             is RepositoryIntent.LoadPullRequests -> fetchPullRequests(intent.owner, intent.repo)
         }
     }
 
-    private fun fetchRepositories() {
+    private fun fetchRepositories(language: String, sort: String, page: Int) {
+        if(_state.value?.isLoading == true) return
         _state.value = _state.value?.copy(isLoading = true)
-        val disposable = repository.fetchRepositories("kotlin", "stars", 1)
-            .subscribe({ onGetRepoSuccess(response = it) }, { onError(error = it) })
+        val disposable = repository.fetchRepositories(language, sort, page)
+            .subscribe(::onGetRepoSuccess, ::onError)
 
         compositeDisposable.add(disposable)
     }
@@ -44,16 +54,19 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
     private fun fetchPullRequests(owner: String, repo: String) {
         _state.value = (_state.value?.copy(isLoading = true))
         val disposable = repository.fetchPullRequests(owner, repo)
-            .subscribe({ onGetPrSuccess(response = it) }, { onError(error = it) })
+            .subscribe(::onGetPrSuccess, ::onError)
 
         compositeDisposable.add(disposable)
     }
 
     private fun onGetRepoSuccess(response: RepositoryResponse) {
+        val currentList = _state.value?.repositories.orEmpty()
         _state.value = _state.value?.copy(
             isLoading = false,
-            repositories = response.items
+            repositories = currentList + response.items
         )
+        currentPage++
+
     }
 
     private fun onGetPrSuccess(response: List<PullRequest>) {

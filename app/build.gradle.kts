@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.navigation.safe)
     id("kotlin-kapt")
 }
 
@@ -22,7 +23,11 @@ android {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "GITHUB_API_TOKEN", "\"${project.findProperty("GITHUB_API_TOKEN") ?: ""}\"")
+        buildConfigField(
+            "String",
+            "GITHUB_API_TOKEN",
+            "\"${project.findProperty("GITHUB_API_TOKEN") ?: ""}\""
+        )
     }
 
     buildTypes {
@@ -83,9 +88,10 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
     kapt("com.github.bumptech.glide:compiler:4.15.1")
 
-    implementation ("androidx.fragment:fragment-ktx:1.6.1")
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.1")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.7.1")
+    implementation("androidx.fragment:fragment-ktx:1.6.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.1")
+//    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

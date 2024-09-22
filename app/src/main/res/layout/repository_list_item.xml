@@ -9,11 +9,15 @@
         android:id="@+id/repository_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:text="Nome do Repositório"
         android:textAppearance="?attr/textAppearanceHeadline6"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/user_info"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,22 +25,101 @@
         android:id="@+id/repository_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="2"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque..."
         android:textAppearance="?attr/textAppearanceBody2"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@id/repository_stars"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/user_info"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/repository_name" />
 
-    <TextView
-        android:id="@+id/repository_stars"
+
+    <LinearLayout
+        android:id="@+id/user_info"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/repository_description">
+
+        <ImageView
+            android:id="@+id/user_avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:contentDescription="user_avatar"
+            android:src="@drawable/baseline_account_circle_120" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="username"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/full_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nome Sobrenome"
+            android:layout_marginTop="8dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="8sp" />
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/fork_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="★ 0"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/baseline_fork_right_24"
+        app:layout_constraintBottom_toBottomOf="@+id/forks_count"
+        app:layout_constraintEnd_toStartOf="@id/forks_count"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/repository_description" />
+        app:layout_constraintTop_toBottomOf="@id/user_info" />
+
+    <TextView
+        android:id="@+id/forks_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/fork_icon"
+        app:layout_constraintTop_toBottomOf="@id/user_info" />
+
+
+    <ImageView
+        android:id="@+id/star_icon"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_star_24"
+        app:layout_constraintBottom_toBottomOf="@+id/stars_count"
+        app:layout_constraintEnd_toStartOf="@id/stars_count"
+        app:layout_constraintStart_toEndOf="@id/forks_count"
+        app:layout_constraintTop_toBottomOf="@id/user_info" />
+    <TextView
+        android:id="@+id/stars_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/star_icon"
+        app:layout_constraintTop_toTopOf="@id/forks_count" />
 </androidx.constraintlayout.widget.ConstraintLayout>

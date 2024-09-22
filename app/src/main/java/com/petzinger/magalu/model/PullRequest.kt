@@ -12,5 +12,7 @@ data class PullRequest(
     @SerializedName("created_at")
     val createdAt: String?,
     @SerializedName("user")
-    val user: User
+    val user: User,
+    @SerializedName("html_url")
+    val url: String
 )

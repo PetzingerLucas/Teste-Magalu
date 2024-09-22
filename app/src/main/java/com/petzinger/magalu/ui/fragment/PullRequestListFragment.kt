@@ -1,29 +1,33 @@
 package com.petzinger.magalu.ui.fragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.petzinger.magalu.databinding.FragmentPullRequestListBinding
 import com.petzinger.magalu.databinding.FragmentRepositoryListBinding
 import com.petzinger.magalu.di.DaggerAppComponent
 import com.petzinger.magalu.ui.RepositoryIntent
+import com.petzinger.magalu.ui.adapter.PullRequestAdapter
 import com.petzinger.magalu.ui.adapter.RepositoryAdapter
 import com.petzinger.magalu.ui.viewmodel.MainViewModel
 import com.petzinger.magalu.utils.setVisibility
 import javax.inject.Inject
 
-class RepositoryListFragment : Fragment() {
+class PullRequestListFragment : Fragment() {
 
-    private var _binding: FragmentRepositoryListBinding? = null
+    private var _binding: FragmentPullRequestListBinding? = null
     private val binding get() = _binding!!
-    private lateinit var adapter: RepositoryAdapter
+    private lateinit var adapter: PullRequestAdapter
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -40,70 +44,49 @@ class RepositoryListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRepositoryListBinding.inflate(inflater, container, false)
+        _binding = FragmentPullRequestListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel =
-            ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
-
+        startAdapter()
         setupRecyclerView()
+
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
 
         viewModel.state.observe(viewLifecycleOwner) { state ->
             state?.isLoading?.let { isLoading -> setLoadingProgressBar(isLoading) }
-            state?.repositories?.let { repositories ->
-                adapter.submitList(repositories)
+            state?.pullRequests?.let { pullRequests ->
+                adapter.submitList(pullRequests)
             }
         }
-        if (viewModel.state.value?.repositories.isNullOrEmpty()) {
-            viewModel.processIntent(RepositoryIntent.LoadRepositories())
+
+        arguments?.let {
+            val args = PullRequestListFragmentArgs.fromBundle(it)
+            viewModel.processIntent(RepositoryIntent.LoadPullRequests(args.owner, args.repo))
         }
     }
 
     private fun setLoadingProgressBar(isLoading: Boolean) {
-        if (viewModel.currentPage != 1) return
         binding.progressBar.setVisibility(!isLoading)
         binding.recyclerView.setVisibility(isLoading)
+
+    }
+
+    private fun startAdapter() {
+        adapter = PullRequestAdapter { pullRequest ->
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(pullRequest.url))
+            activity?.startActivity(browserIntent)
+        }
     }
 
     private fun setupRecyclerView() {
-        startAdapter()
         val dividerItemDecoration =
             DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
         binding.recyclerView.addItemDecoration(dividerItemDecoration)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
-        setupListener()
-    }
-
-    private fun setupListener() {
-        binding.recyclerView.addOnScrollListener(object : OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val totalItemCount = layoutManager.itemCount
-                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-
-                if (lastVisibleItemPosition + 5 >= totalItemCount) {
-                    viewModel.processIntent(RepositoryIntent.LoadRepositories())
-                }
-            }
-        })
-    }
-
-    private fun startAdapter() {
-
-        adapter = RepositoryAdapter { repository ->
-            val action = RepositoryListFragmentDirections
-                .actionRepositoryListFragmentToPullRequestListFragment(
-                    repository.repositoryOwner.login,
-                    repository.name
-                )
-            findNavController().navigate(action)
-        }
-
     }
 
     override fun onDestroyView() {

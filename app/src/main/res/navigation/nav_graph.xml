@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,5 +7,32 @@
     <fragment
         android:id="@+id/repositoryListFragment"
         android:name="com.petzinger.magalu.ui.fragment.RepositoryListFragment"
-        tools:layout="@layout/fragment_repository_list" />
+        android:label="Repository List"
+        tools:layout="@layout/fragment_repository_list">
+
+        <action
+            android:id="@+id/action_repositoryListFragment_to_pullRequestListFragment"
+            app:destination="@id/pullRequestListFragment">
+            <argument
+                android:name="owner"
+                app:argType="string" />
+            <argument
+                android:name="repo"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/pullRequestListFragment"
+        android:name="com.petzinger.magalu.ui.fragment.PullRequestListFragment"
+        android:label="Pull Request List"
+        tools:layout="@layout/fragment_pull_request_list">
+
+        <argument
+            android:name="owner"
+            app:argType="string" />
+        <argument
+            android:name="repo"
+            app:argType="string" />
+    </fragment>
 </navigation>
