@@ -107,5 +107,6 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
     testImplementation("com.google.dagger:dagger:2.40.5")
     kaptTest("com.google.dagger:dagger-compiler:2.40.5")
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
     testImplementation("io.reactivex.rxjava3:rxjava:3.1.3")
 }

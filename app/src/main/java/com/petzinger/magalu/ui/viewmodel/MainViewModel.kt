@@ -3,9 +3,9 @@ package com.petzinger.magalu.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.petzinger.magalu.data.DataSource
 import com.petzinger.magalu.model.pullrequest.PullRequest
 import com.petzinger.magalu.model.repository.RepositoryResponse
-import com.petzinger.magalu.data.DataSource
 import com.petzinger.magalu.ui.repository.RepositoryIntent
 import com.petzinger.magalu.ui.repository.RepositoryState
 import io.reactivex.rxjava3.disposables.CompositeDisposable
