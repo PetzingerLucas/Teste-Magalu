@@ -100,4 +100,12 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    testImplementation("org.mockito:mockito-core:4.0.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
+    testImplementation("com.google.dagger:dagger:2.40.5")
+    kaptTest("com.google.dagger:dagger-compiler:2.40.5")
+    testImplementation("io.reactivex.rxjava3:rxjava:3.1.3")
 }
