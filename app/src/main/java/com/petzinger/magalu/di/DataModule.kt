@@ -7,11 +7,11 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class AppModule {
+class DataModule {
 
     @Provides
     @Singleton
-    fun provideRepository(apiService: GitHubApi): DataSource {
+    fun provideDataSource(apiService: GitHubApi): DataSource {
         return DataSource(apiService)
     }
 }
