@@ -46,8 +46,8 @@ O projeto utiliza a arquitetura **Model-View-Intent (MVI)** para gerenciamento d
 1. **Clone o repositório:**
 
 ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
-   cd seu-repositorio
+   git clone https://github.com/PetzingerLucas/Teste-Magalu.git
+   cd Teste-Magalu
 ```
 
 Abra o projeto no Android Studio:
