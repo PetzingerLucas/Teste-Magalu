@@ -1,4 +1,4 @@
-package com.petzinger.magalu.ui.adapter
+package com.petzinger.magalu.ui.pullrequest
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.petzinger.magalu.R
 import com.petzinger.magalu.databinding.PullRequestListItemBinding
-import com.petzinger.magalu.model.PullRequest
+import com.petzinger.magalu.model.pullrequest.PullRequest
 import com.petzinger.magalu.utils.parsedDate
 
 class PullRequestAdapter(

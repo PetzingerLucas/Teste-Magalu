@@ -1,7 +1,7 @@
 package com.petzinger.magalu.network
 
-import com.petzinger.magalu.model.PullRequest
-import com.petzinger.magalu.model.RepositoryResponse
+import com.petzinger.magalu.model.pullrequest.PullRequest
+import com.petzinger.magalu.model.repository.RepositoryResponse
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Path

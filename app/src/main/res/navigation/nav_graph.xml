@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/repositoryListFragment"
-        android:name="com.petzinger.magalu.ui.fragment.RepositoryListFragment"
+        android:name="com.petzinger.magalu.ui.repository.RepositoryListFragment"
         android:label="Repository List"
         tools:layout="@layout/fragment_repository_list">
 
@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/pullRequestListFragment"
-        android:name="com.petzinger.magalu.ui.fragment.PullRequestListFragment"
+        android:name="com.petzinger.magalu.ui.pullrequest.PullRequestListFragment"
         android:label="Pull Request List"
         tools:layout="@layout/fragment_pull_request_list">
 

@@ -3,15 +3,15 @@ package com.petzinger.magalu.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.petzinger.magalu.model.PullRequest
-import com.petzinger.magalu.model.RepositoryResponse
-import com.petzinger.magalu.model.repository.Repository
-import com.petzinger.magalu.ui.RepositoryIntent
-import com.petzinger.magalu.ui.RepositoryState
+import com.petzinger.magalu.model.pullrequest.PullRequest
+import com.petzinger.magalu.model.repository.RepositoryResponse
+import com.petzinger.magalu.data.DataSource
+import com.petzinger.magalu.ui.repository.RepositoryIntent
+import com.petzinger.magalu.ui.repository.RepositoryState
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
+class MainViewModel @Inject constructor(private val dataSource: DataSource) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
     private val _state = MutableLiveData<RepositoryState>()
@@ -45,7 +45,7 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
     private fun fetchRepositories(language: String, sort: String, page: Int) {
         if(_state.value?.isLoading == true) return
         _state.value = _state.value?.copy(isLoading = true)
-        val disposable = repository.fetchRepositories(language, sort, page)
+        val disposable = dataSource.fetchRepositories(language, sort, page)
             .subscribe(::onGetRepoSuccess, ::onError)
 
         compositeDisposable.add(disposable)
@@ -53,7 +53,7 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
 
     private fun fetchPullRequests(owner: String, repo: String) {
         _state.value = (_state.value?.copy(isLoading = true))
-        val disposable = repository.fetchPullRequests(owner, repo)
+        val disposable = dataSource.fetchPullRequests(owner, repo)
             .subscribe(::onGetPrSuccess, ::onError)
 
         compositeDisposable.add(disposable)

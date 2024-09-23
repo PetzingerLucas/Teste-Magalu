@@ -1,14 +1,13 @@
-package com.petzinger.magalu.ui.adapter
+package com.petzinger.magalu.ui.repository
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.petzinger.magalu.R
 import com.petzinger.magalu.databinding.RepositoryListItemBinding
-import com.petzinger.magalu.model.RepositoryItem
+import com.petzinger.magalu.model.repository.RepositoryItem
 
 class RepositoryAdapter(
     private val onItemClick: (RepositoryItem) -> Unit

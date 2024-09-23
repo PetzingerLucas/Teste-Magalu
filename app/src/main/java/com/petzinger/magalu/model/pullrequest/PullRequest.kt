@@ -1,4 +1,4 @@
-package com.petzinger.magalu.model
+package com.petzinger.magalu.model.pullrequest
 
 import com.google.gson.annotations.SerializedName
 
