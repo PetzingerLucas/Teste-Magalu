@@ -87,7 +87,7 @@ https://docs.github.com/pt/rest/search/search?apiVersion=2022-11-28#search-repos
 - Injeção de ViewModel com Dagger:
 https://stackoverflow.com/questions/71675474/viewmodel-injection-failing-on-dagger-kotlin-android
 
-- Testes com Mockito
+- Testes com Mockito:
 https://site.mockito.org/
 
 ### Considerações Finais
