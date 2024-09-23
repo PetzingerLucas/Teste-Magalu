@@ -78,6 +78,9 @@ Estrutura de Testes:
 ### Referências
 - Aqui estão algumas das principais documentações e recursos utilizados no desenvolvimento deste projeto:
 
+- Documentação RxJava:
+https://reactivex.io/documentation
+
 - Documentação do Dagger Android:
 https://developer.android.com/training/dependency-injection/dagger-android?hl=pt-br#dagger-modules
 
